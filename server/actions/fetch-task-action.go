@@ -48,6 +48,7 @@ func (a *FetchTaskAction) Run() {
 			task.Execute()
 			storage := server.GetStorage()
 			id := ""
+			//generate uniq id for task
 			for {
 				id = strconv.Itoa(rand.Int())
 				if _, ok := storage.Load(id); !ok {

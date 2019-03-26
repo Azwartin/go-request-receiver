@@ -29,7 +29,9 @@ func GetStorage() *Storage {
 //Load returns value stored in the map for a key, or nil if no value present
 //The ok result indicates whether value was found in the map.
 func (s *Storage) Load(key string) (interface{}, bool) {
+	s.mutex.RLock()
 	value, ok := s.items[key]
+	s.mutex.RUnlock()
 	return value, ok
 }
 
