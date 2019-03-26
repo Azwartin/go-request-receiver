@@ -12,11 +12,11 @@ go get github.com/azwartin/go-request-receiver
 /fetch-tasks - запрос выполнения задачи параллельных запросов. в теле ожидается json с массивом объектов вида
 [
     {
-        "method" : "POST"
-        "url" : "http://example.com"
+        "method" : "POST",
+        "url" : "http://example.com",
         "headers" : {
-            "Accept-Language" : "ru_RU"
-        }
+            "Accept-Language" : ["ru_RU"]
+        },
         "body" : "{\"value\": 1}"
     }
 ]
