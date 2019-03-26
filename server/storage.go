@@ -5,19 +5,19 @@ import (
 	"sync"
 )
 
-//storage is concurent safe storage for any struct
-type storage struct {
+//Storage is concurent safe storage for any struct
+type Storage struct {
 	mutex sync.RWMutex
 	items map[string]interface{}
 }
 
-var instance *storage
+var instance *Storage
 var once sync.Once
 
 //GetStorage - get storage as singleton
-func GetStorage() *storage {
+func GetStorage() *Storage {
 	once.Do(func() {
-		instance = &storage{
+		instance = &Storage{
 			mutex: sync.RWMutex{},
 			items: map[string]interface{}{},
 		}
@@ -28,14 +28,14 @@ func GetStorage() *storage {
 
 //Load returns value stored in the map for a key, or nil if no value present
 //The ok result indicates whether value was found in the map.
-func (s *storage) Load(key string) (interface{}, bool) {
+func (s *Storage) Load(key string) (interface{}, bool) {
 	value, ok := s.items[key]
 	return value, ok
 }
 
-//Load returns slice with values stored in the map in order with offset and limit
+//LoadRange returns slice with values stored in the map in order with offset and limit
 //This is not a production ready code, just for simplifying pagination
-func (s *storage) LoadRange(limit, offset uint) []interface{} {
+func (s *Storage) LoadRange(limit, offset uint) []interface{} {
 	if int(offset) >= len(s.items) {
 		return []interface{}{}
 	}
@@ -64,14 +64,14 @@ func (s *storage) LoadRange(limit, offset uint) []interface{} {
 }
 
 //Store sets the value for a key.
-func (s *storage) Store(key string, value interface{}) {
+func (s *Storage) Store(key string, value interface{}) {
 	s.mutex.Lock()
 	s.items[key] = value
 	s.mutex.Unlock()
 }
 
 //Delete deletes value from store
-func (s *storage) Delete(key string) {
+func (s *Storage) Delete(key string) {
 	s.mutex.Lock()
 	delete(s.items, key)
 	s.mutex.Unlock()
