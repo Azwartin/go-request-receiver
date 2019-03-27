@@ -44,10 +44,12 @@ func (s *Storage) LoadRange(limit, offset int) []interface{} {
 	//prepare keys for  stable sort
 	keys := make([]string, len(s.items))
 	i := 0
+	s.mutex.Lock()
 	for key := range s.items {
 		keys[i] = key
 		i++
 	}
+	s.mutex.Unlock()
 	sort.Strings(keys)
 	//get items
 	items := []interface{}{}
