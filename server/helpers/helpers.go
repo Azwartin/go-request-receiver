@@ -7,25 +7,25 @@ import (
 
 //Pagination struct to load and convert pagination to limit offset
 type Pagination struct {
-	Page uint
-	Size uint
+	Page int
+	Size int
 }
 
 //Load pagination params from request
 func (p *Pagination) Load(r *http.Request) {
 	size := r.FormValue("page-size")
 	page := r.FormValue("page")
-	if t, err := strconv.ParseUint(size, 10, 16); err == nil {
-		p.Size = uint(t)
+	if t, err := strconv.Atoi(size); err == nil {
+		p.Size = t
 	}
 
-	if t, err := strconv.ParseUint(page, 10, 16); err == nil && t >= 1 {
-		p.Page = uint(t)
+	if t, err := strconv.Atoi(page); err == nil && t >= 1 {
+		p.Page = t
 	}
 }
 
 //GetLimit returns limit
-func (p *Pagination) GetLimit() uint {
+func (p *Pagination) GetLimit() int {
 	if p.Size == 0 {
 		return 10
 	}
@@ -34,7 +34,7 @@ func (p *Pagination) GetLimit() uint {
 }
 
 //GetOffset returns offset
-func (p *Pagination) GetOffset() uint {
+func (p *Pagination) GetOffset() int {
 	if p.Page == 0 {
 		return 0
 	}

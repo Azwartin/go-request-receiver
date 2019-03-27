@@ -50,9 +50,9 @@ func TestLoad(t *testing.T) {
 }
 
 type RangeTest struct {
-	limit  uint
-	offset uint
-	length uint
+	limit  int
+	offset int
+	length int
 }
 
 func TestLoadRange(t *testing.T) {

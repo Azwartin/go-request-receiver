@@ -29,15 +29,15 @@ func GetStorage() *Storage {
 //Load returns value stored in the map for a key, or nil if no value present
 //The ok result indicates whether value was found in the map.
 func (s *Storage) Load(key string) (interface{}, bool) {
-	s.mutex.RLock()
+	s.mutex.Lock()
 	value, ok := s.items[key]
-	s.mutex.RUnlock()
+	s.mutex.Unlock()
 	return value, ok
 }
 
 //LoadRange returns slice with values stored in the map in order with offset and limit
 //This is not a production ready code, just for simplifying pagination
-func (s *Storage) LoadRange(limit, offset uint) []interface{} {
+func (s *Storage) LoadRange(limit, offset int) []interface{} {
 	if int(offset) >= len(s.items) {
 		return []interface{}{}
 	}
@@ -51,8 +51,8 @@ func (s *Storage) LoadRange(limit, offset uint) []interface{} {
 	sort.Strings(keys)
 	//get items
 	items := []interface{}{}
-	end := int(offset + limit)
-	for i = int(offset); i < end && i < len(keys); i++ {
+	end := offset + limit
+	for i = offset; i < end && i < len(keys); i++ {
 		value, ok := s.Load(keys[i])
 		//if can't get - try next
 		if ok {

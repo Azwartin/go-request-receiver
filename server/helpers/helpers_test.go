@@ -7,8 +7,8 @@ import (
 
 type PaginationTest struct {
 	p      *Pagination
-	limit  uint
-	offset uint
+	limit  int
+	offset int
 }
 
 func TestPaginationToLimitOffset(t *testing.T) {
